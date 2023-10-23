@@ -140,5 +140,22 @@ def postlike(request):
         post.no_of_likes -= 1
         post.save()
         return redirect('index')
+    
+@login_required(login_url='signin')
+def profile(request,pk):
+
+    user_object = User.objects.get(username=pk)
+    user_profile= Profile.objects.get(user=user_object)
+    user_posts = Post.objects.filter(user=pk).order_by('-created_at')
+    user_posts_count = Post.objects.filter(user=pk).count()
+
+    context = {
+        'user_object':user_object,
+        'user_profile':user_profile,
+        'user_posts':user_posts,
+        'user_posts_count':user_posts_count
+    }
+
+    return render(request, 'profile.html', context)
 
 
