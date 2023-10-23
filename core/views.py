@@ -13,7 +13,8 @@ from . models import Profile, Post
 def index(request):
     user_object = User.objects.get(username = request.user.username)
     profile_object = Profile.objects.get(user = user_object)
-    context = {'profile_object':profile_object}
+    posts = Post.objects.all().order_by('-created_at')
+    context = {'profile_object':profile_object,'posts':posts}
     return render(request,'index.html',context)
 
 def signup(request):
